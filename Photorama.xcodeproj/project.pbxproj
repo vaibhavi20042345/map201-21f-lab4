@@ -19,6 +19,10 @@
 		C04D6052260EBDC900544921 /* Photo.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D6051260EBDC900544921 /* Photo.swift */; };
 		C04D6057260EBDFA00544921 /* PhotoStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D6056260EBDFA00544921 /* PhotoStore.swift */; };
 		C04D605C260EBE2400544921 /* PhotosViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D605B260EBE2400544921 /* PhotosViewController.swift */; };
+		C04D6061260ECB2C00544921 /* ImageStore.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D6060260ECB2C00544921 /* ImageStore.swift */; };
+		C04D6066260ECBC000544921 /* PhotoCollectionViewCell.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D6065260ECBC000544921 /* PhotoCollectionViewCell.swift */; };
+		C04D606B260ECC1400544921 /* PhotoDataSource.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D606A260ECC1400544921 /* PhotoDataSource.swift */; };
+		C04D6070260ECC8900544921 /* PhotoInfoViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = C04D606F260ECC8900544921 /* PhotoInfoViewController.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -57,6 +61,10 @@
 		C04D6051260EBDC900544921 /* Photo.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = Photo.swift; sourceTree = "<group>"; };
 		C04D6056260EBDFA00544921 /* PhotoStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoStore.swift; sourceTree = "<group>"; };
 		C04D605B260EBE2400544921 /* PhotosViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotosViewController.swift; sourceTree = "<group>"; };
+		C04D6060260ECB2C00544921 /* ImageStore.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = ImageStore.swift; sourceTree = "<group>"; };
+		C04D6065260ECBC000544921 /* PhotoCollectionViewCell.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoCollectionViewCell.swift; sourceTree = "<group>"; };
+		C04D606A260ECC1400544921 /* PhotoDataSource.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoDataSource.swift; sourceTree = "<group>"; };
+		C04D606F260ECC8900544921 /* PhotoInfoViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = PhotoInfoViewController.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -118,6 +126,10 @@
 				C04D6051260EBDC900544921 /* Photo.swift */,
 				C04D6056260EBDFA00544921 /* PhotoStore.swift */,
 				C04D605B260EBE2400544921 /* PhotosViewController.swift */,
+				C04D6060260ECB2C00544921 /* ImageStore.swift */,
+				C04D6065260ECBC000544921 /* PhotoCollectionViewCell.swift */,
+				C04D606A260ECC1400544921 /* PhotoDataSource.swift */,
+				C04D606F260ECC8900544921 /* PhotoInfoViewController.swift */,
 			);
 			path = Photorama;
 			sourceTree = "<group>";
@@ -273,7 +285,11 @@
 				C04D601E260EBA9A00544921 /* ViewController.swift in Sources */,
 				C04D601A260EBA9A00544921 /* AppDelegate.swift in Sources */,
 				C04D601C260EBA9A00544921 /* SceneDelegate.swift in Sources */,
+				C04D606B260ECC1400544921 /* PhotoDataSource.swift in Sources */,
+				C04D6061260ECB2C00544921 /* ImageStore.swift in Sources */,
 				C04D604D260EBD3500544921 /* FlickrAPI.swift in Sources */,
+				C04D6066260ECBC000544921 /* PhotoCollectionViewCell.swift in Sources */,
+				C04D6070260ECC8900544921 /* PhotoInfoViewController.swift in Sources */,
 				C04D605C260EBE2400544921 /* PhotosViewController.swift in Sources */,
 				C04D6057260EBDFA00544921 /* PhotoStore.swift in Sources */,
 				C04D6052260EBDC900544921 /* Photo.swift in Sources */,
