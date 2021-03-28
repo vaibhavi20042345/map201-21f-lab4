@@ -30,7 +30,7 @@ struct FlickrPhotosResponse: Codable {
 struct FlickrAPI {
 
     private static let baseURLString = "https://api.flickr.com/services/rest"
-    private static let apiKey = "a6d819499131071f158fd740860a5a88"
+    private static let apiKey = "b93d03361b487a22f951ef3dc08ad06a"
 
     private static func flickrURL(endPoint: EndPoint,
                                   parameters: [String:String]?) -> URL {
