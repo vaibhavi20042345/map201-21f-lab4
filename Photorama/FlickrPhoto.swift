@@ -7,7 +7,7 @@
 
 import Foundation
 
-class Photo: Codable {
+class FlickrPhoto: Codable {
     let title: String
     let remoteURL: URL?
     let photoID: String
@@ -21,9 +21,9 @@ class Photo: Codable {
     }
 }
 
-extension Photo: Equatable {
+extension FlickrPhoto: Equatable {
     
-    static func == (lhs: Photo, rhs: Photo) -> Bool {
+    static func == (lhs: FlickrPhoto, rhs: FlickrPhoto) -> Bool {
         // Two Photos are the same iff they have the same PhotoID
         return lhs.photoID == rhs.photoID
     }
