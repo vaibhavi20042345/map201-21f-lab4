@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import CoreData
 
 enum EndPoint: String {
     case interestingPhotos = "flickr.interestingness.getList"
@@ -71,18 +72,17 @@ struct FlickrAPI {
     static func photos(fromJSON data: Data) -> Result<[FlickrPhoto], Error> {
         do {
             let decoder = JSONDecoder()
-            
+
             let dateFormatter = DateFormatter()
             dateFormatter.dateFormat = "yyyy-MM-dd HH:mm:ss"
             dateFormatter.locale = Locale(identifier: "en_US_POSIX")
             dateFormatter.timeZone = TimeZone(secondsFromGMT: 0)
             decoder.dateDecodingStrategy = .formatted(dateFormatter)
-            
-            let flickrResponse = try decoder.decode(FlickrResponse.self, from: data)
 
+            let flickrResponse = try decoder.decode(FlickrResponse.self, from: data)
             let photos = flickrResponse.photosInfo.photos.filter { $0.remoteURL != nil }
             return .success(photos)
-        } catch let error {
+        } catch {
             return .failure(error)
         }
     }

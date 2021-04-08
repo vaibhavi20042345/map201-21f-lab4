@@ -7,7 +7,7 @@
 
 import Foundation
 
-class FlickrPhoto: Codable {
+struct FlickrPhoto: Codable {
     let title: String
     let remoteURL: URL?
     let photoID: String

@@ -1,10 +1,6 @@
+// 
+//  Copyright © 2020 Big Nerd Ranch
 //
-//  PhotoCollectionViewCell.swift
-//  Photorama
-//
-//  Created by vaibhavi on 2021-03-26.
-//
-
 
 import UIKit
 
@@ -12,7 +8,7 @@ class PhotoCollectionViewCell: UICollectionViewCell {
     
     @IBOutlet var imageView: UIImageView!
     @IBOutlet var spinner: UIActivityIndicatorView!
-    
+
     func update(displaying image: UIImage?) {
         if let imageToDisplay = image {
             spinner.stopAnimating()
