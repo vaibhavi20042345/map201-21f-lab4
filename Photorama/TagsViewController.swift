@@ -15,6 +15,36 @@ class TagsViewController: UITableViewController {
         var selectedIndexPaths = [IndexPath]()
     let tagDataSource = TagDataSource()
 
+     @IBAction func done(_ sender: UIBarButtonItem) {
+        presentingViewController?.dismiss(animated: true)
+     }
+
+        @IBAction func addNewTag(_ sender: UIBarButtonItem) {
+        let alertController = UIAlertController(title: "Add Tag",
+                                                        message: nil,
+                                                        preferredStyle: .alert)
+
+                alertController.addTextField {
+                    (textField) in
+                    textField.placeholder = "tag name"
+                    textField.autocapitalizationType = .words
+                }
+         let okAction = UIAlertAction(title: "OK", style: .default) {
+                    (action) in
+
+                }
+                alertController.addAction(okAction)
+
+                let cancelAction = UIAlertAction(title: "Cancel",
+                                                 style: .cancel,
+                                                 handler: nil)
+                alertController.addAction(cancelAction)
+
+                present(alertController,
+                        animated: true)
+        }
+
+ 
 override func viewDidLoad() {
             super.viewDidLoad()
 

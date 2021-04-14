@@ -8,19 +8,9 @@
 import UIKit
 import CoreData
 
-enum ImageResult {
-    case success(UIImage)
-    case failure(Error)
-}
-
 enum PhotoError: Error {
     case imageCreationError
     case missingImageURL
-}
-
-enum PhotosResult {
-    case success([Photo])
-    case failure(Error)
 }
 
 class PhotoStore {
@@ -49,61 +39,61 @@ class PhotoStore {
         let task = session.dataTask(with: request) {
             (data, response, error) in
 
-            var result = self.processPhotosRequest(data: data, error: error)
-            if case .success = result {
-                do {
-                    try self.persistentContainer.viewContext.save()
-                } catch {
-                    result = .failure(error)
+            self.processPhotosRequest(data: data, error: error) {
+                (result) in
+
+                OperationQueue.main.addOperation {
+                    completion(result)
                 }
-            }
-            OperationQueue.main.addOperation {
-                completion(result)
             }
         }
         task.resume()
     }
     
-    private func processPhotosRequest(data: Data?, error: Error?) -> Result<[Photo], Error> {
+    private func processPhotosRequest(data: Data?,
+                                      error: Error?,
+                                      completion: @escaping (Result<[Photo], Error>) -> Void) {
         guard let jsonData = data else {
-            return .failure(error!)
+            completion(.failure(error!))
+            return
         }
 
-        let context = persistentContainer.viewContext
+        persistentContainer.performBackgroundTask {
+            (context) in
+            switch FlickrAPI.photos(fromJSON: jsonData) {
+            case let .success(flickrPhotos):
+                let photos = flickrPhotos.map { flickrPhoto -> Photo in
+                    let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
+                    let predicate = NSPredicate(
+                        format: "\(#keyPath(Photo.photoID)) == \(flickrPhoto.photoID)"
+                    )
+                    fetchRequest.predicate = predicate
+                    var fetchedPhotos: [Photo]?
+                    context.performAndWait {
+                        fetchedPhotos = try? fetchRequest.execute()
+                    }
+                    if let existingPhoto = fetchedPhotos?.first {
+                        return existingPhoto
+                    }
 
-        switch FlickrAPI.photos(fromJSON: jsonData) {
-        case let .success(flickrPhotos):
-            let photos = flickrPhotos.map { flickrPhoto -> Photo in
-                let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
-                let predicate = NSPredicate(
-                    format: "\(#keyPath(Photo.photoID)) == \(flickrPhoto.photoID)"
-                )
-                fetchRequest.predicate = predicate
-                var fetchedPhotos: [Photo]?
-                context.performAndWait {
-                    fetchedPhotos = try? fetchRequest.execute()
+                    var photo: Photo!
+                    context.performAndWait {
+                        photo = Photo(context: context)
+                        photo.title = flickrPhoto.title
+                        photo.photoID = flickrPhoto.photoID
+                        photo.remoteURL = flickrPhoto.remoteURL
+                        photo.dateTaken = flickrPhoto.dateTaken
+                    }
+                    return photo
                 }
-                if let existingPhoto = fetchedPhotos?.first {
-                    return existingPhoto
-                }
-
-                var photo: Photo!
-                context.performAndWait {
-                    photo = Photo(context: context)
-                    photo.title = flickrPhoto.title
-                    photo.photoID = flickrPhoto.photoID
-                    photo.remoteURL = flickrPhoto.remoteURL
-                    photo.dateTaken = flickrPhoto.dateTaken
-                }
-                return photo
+                completion(.success(photos))
+            case let .failure(error):
+                completion(.failure(error))
             }
-            return .success(photos)
-        case let .failure(error):
-            return .failure(error)
         }
     }
     
-    func fetchAllPhotos(completion: @escaping (PhotosResult) -> Void) {
+    func fetchAllPhotos(completion: @escaping (Result<[Photo], Error>) -> Void) {
         let fetchRequest: NSFetchRequest<Photo> = Photo.fetchRequest()
         let sortByDateTaken = NSSortDescriptor(key: #keyPath(Photo.dateTaken),
                                                ascending: true)
@@ -121,7 +111,7 @@ class PhotoStore {
         
     }
     
-    func fetchImage(for photo: Photo, completion: @escaping (ImageResult) -> Void) {
+    func fetchImage(for photo: Photo, completion: @escaping (Result<UIImage, Error>) -> Void) {
         
         guard let photoKey = photo.photoID else {
             preconditionFailure("Photo expected to have a photoID.")
@@ -155,7 +145,7 @@ class PhotoStore {
         task.resume()
     }
     
-    private func processImageRequest(data: Data?, error: Error?) -> ImageResult {
+    private func processImageRequest(data: Data?, error: Error?) -> Result<UIImage, Error> {
         guard
             let imageData = data,
             let image = UIImage(data: imageData) else {
@@ -175,15 +165,16 @@ class PhotoStore {
         let fetchRequest: NSFetchRequest<Tag> = Tag.fetchRequest()
         let sortByName = NSSortDescriptor(key: #keyPath(Tag.name), ascending: true)
         fetchRequest.sortDescriptors = [sortByName]
-
-            let viewContext = persistentContainer.viewContext
-            viewContext.perform {
-                do {
-                    let allTags = try fetchRequest.execute()
-                    completion(.success(allTags))
-                } catch {
-                    completion(.failure(error))
-                }
+        
+        let viewContext = persistentContainer.viewContext
+        viewContext.perform {
+            do {
+                let allTags = try fetchRequest.execute()
+                completion(.success(allTags))
+            } catch {
+                completion(.failure(error))
             }
         }
+    }
+    
 }
